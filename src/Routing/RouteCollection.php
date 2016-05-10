@@ -2,13 +2,13 @@
 
 namespace Requtize\Routing;
 
+use Serializable;
 use Closure;
 use RuntimeException;
 use InvalidArgumentException;
-
 use Requtize\Routing\Exception\RouteNameNotFoundException;
 
-class RouteCollection
+class RouteCollection implements Serializable
 {
     /**
      * Store array of routes.
@@ -359,7 +359,7 @@ class RouteCollection
     {
         foreach($array as $route)
         {
-            $this->collection[] = $this->fixRouteArray($route);
+            $this->collection[] = $this->transformArrayToRoute($this->fixRouteArray($route));
         }
 
         return $this;
@@ -445,13 +445,13 @@ class RouteCollection
         return $route;
     }
 
-    public function __sleep()
+    public function serialize()
     {
-        return [$this->collection, $thic->compiled];
+        return serialize([$this->collection, $this->compiled]);
     }
 
-    public function __wakeup()
+    public function unserialize($data)
     {
-
+        list($this->collection, $this->compiled) = unserialize($data);
     }
 }
