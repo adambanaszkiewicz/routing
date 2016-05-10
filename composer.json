@@ -1,0 +1,17 @@
+{
+    "name": "requtize/routing",
+    "description": "Simple and fast PHP routing library.",
+    "keywords": ["routing", "route", "php"],
+    "license": "MIT",
+    "require": {
+        "php": "5.5.*"
+    },
+    "require-dev": {
+        "symfony/routing": "3.0.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Requtize\\Routing\\": "src/Routing"
+        }
+    }
+}
