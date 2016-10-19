@@ -35,7 +35,15 @@ class RouteMatcher implements RouteMatcherInterface
                 {
                     unset($matches[0]);
 
-                    $route['arguments'] = array_values($matches);
+                    $arguments = array_values($matches);
+
+                    foreach($route['tokens'] as $key => $val)
+                    {
+                        if(isset($arguments[$key]))
+                        {
+                            $route['arguments'][$val['name']] = $arguments[$key];
+                        }
+                    }
                     
                     return $this->collection->transformArrayToRoute($route);
                 }

@@ -381,7 +381,8 @@ class RouteCollection implements Serializable
             'sourceRoute' => $route->getSourceRoute(),
             'defaults' => $route->getDefaults(),
             'extras'   => $route->getExtras(),
-            'tokens'   => $route->getTokens()
+            'tokens'   => $route->getTokens(),
+            'arguments'=> $route->getArguments()
         ];
     }
 
@@ -411,6 +412,8 @@ class RouteCollection implements Serializable
             $obj->setExtras($route['extras']);
         if(isset($route['tokens']))
             $obj->setTokens($route['tokens']);
+        if(isset($route['arguments']))
+            $obj->setArguments($route['arguments']);
 
         return $obj;
     }
