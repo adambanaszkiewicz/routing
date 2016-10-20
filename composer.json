@@ -2,6 +2,7 @@
     "name": "requtize/routing",
     "description": "Simple and fast PHP routing library.",
     "keywords": ["routing", "route", "php"],
+    "version": "0.0.1",
     "license": "MIT",
     "require": {
         "php": "~5.5 || ^7.0"
