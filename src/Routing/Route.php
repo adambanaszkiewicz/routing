@@ -42,6 +42,18 @@ class Route
         $this->setName($name);
     }
 
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
     public function setAction($action)
     {
         $this->action = $action;
@@ -86,18 +98,6 @@ class Route
     public function isSatisfiedByMethod($method)
     {
         return in_array($method, $this->methods);
-    }
-
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getName()
-    {
-        return $this->name;
     }
 
     public function setRules(array $rules)
