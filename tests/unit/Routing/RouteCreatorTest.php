@@ -96,6 +96,15 @@ class RouteCreatorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('/before/no-tokens/after', $creator->create('no-tokens'));
         $this->assertEquals('/before/token-digit/1/after', $creator->create('token-digit', ['token' => '1']));
     }
+
+    public function testMoreArgumentsThanNeed()
+    {
+        $this->assertEquals('/one-token/1?more=values&in=query+string+%3A%29', $this->creator->create('one-token', [
+            'token' => '1',
+            'more'  => 'values',
+            'in'    => 'query string :)'
+        ]));
+    }
 }
 
 class MyRouteCreator extends RouteCreator

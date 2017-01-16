@@ -286,9 +286,9 @@ class RouteCollectionTest extends PHPUnit_Framework_TestCase
      * Create array with full functionality, and try to import it - then check if
      * all functionality is in imported route.
      *
-     * @dataProvider importArray
+     * @dataProvider importArrayBeforeCompile
      */
-    public function testImport($data)
+    public function testImportBeforeCompile($data)
     {
         $import = [];
 
@@ -305,52 +305,62 @@ class RouteCollectionTest extends PHPUnit_Framework_TestCase
 
         foreach($data as $field)
         {
-            $this->assertEquals($field['value'], $routes[0][$field['name']]);
+            $this->assertEquals($field['value'], $routes[0]->{$field['method']}(), $field['name']);
         }
     }
 
-    public function importArray()
+    public function importArrayBeforeCompile()
     {
         return [
             [
                 [
                     [
+                        'method' => 'getName',
                         'name'   => 'name',
                         'value'  => 'simple'
                     ],
                     [
+                        'method' => 'getAction',
                         'name'   => 'action',
                         'value'  => 'Controller:action'
                     ],
                     [
-                        'name'   => 'rules',
-                        'value'  => ['first-token' => '[a-z]+', 'second-token' => '\/[^\/]+']
-                    ],
-                    [
+                        'method' => 'getMethods',
                         'name'   => 'methods',
                         'value'  => ['GET', 'POST']
                     ],
                     [
+                        'method' => 'getRules',
+                        'name'   => 'rules',
+                        'value'  => ['first-token' => '[a-z]+', 'second-token' => '\/[^\/]+']
+                    ],
+                    [
+                        'method' => 'getRoute',
                         'name'   => 'route',
                         'value'  => '/source/route/([a-z]+)(\/[^\/]+)'
                     ],
                     [
+                        'method' => 'getSourceRoute',
                         'name'   => 'sourceRoute',
                         'value'  => '/source/route/{first-token}/{second-token}'
                     ],
                     [
+                        'method' => 'getArguments',
+                        'name'   => 'arguments',
+                        'value'  => ['first-argument' => '1', 'second-argument' => '2']
+                    ],
+                    [
+                        'method' => 'getDefaults',
                         'name'   => 'defaults',
                         'value'  => ['first-token' => 'default', 'second-token' => '/wild/card']
                     ],
                     [
-                        'name'   => 'wildcard',
-                        'value'  => 'second-token'
-                    ],
-                    [
+                        'method' => 'getExtras',
                         'name'   => 'extras',
                         'value'  => ['first-extra', 'second-extra']
                     ],
                     [
+                        'method' => 'getTokens',
                         'name'   => 'tokens',
                         'value'  => [
                             [
@@ -366,11 +376,86 @@ class RouteCollectionTest extends PHPUnit_Framework_TestCase
                                 'pattern' => '\/[^\/]+'
                             ]
                         ]
+                    ]
+                ]
+            ]
+        ];
+    }
+
+
+    /**
+     * Create array with full functionality, and try to import it - then check if
+     * all functionality is in imported route.
+     *
+     * @dataProvider importArrayAfterCompile
+     */
+    public function testImportAfterCompile($data)
+    {
+        $import = [];
+
+        foreach($data as $field)
+        {
+            $import[$field['name']] = $field['value'];
+        }
+
+        $this->collection->importFromArray([$import]);
+        $this->collection->compile();
+
+        $routes = $this->collection->all();
+
+        $this->assertCount(1, $routes);
+
+        foreach($data as $field)
+        {
+            $this->assertEquals($field['value'], $routes[0][$field['name']], $field['name']);
+        }
+    }
+
+    public function importArrayAfterCompile()
+    {
+        return [
+            [
+                [
+                    [
+                        'name'   => 'name',
+                        'value'  => 'simple'
                     ],
                     [
-                        'name'   => 'compiled',
-                        'value'  => false
+                        'name'   => 'action',
+                        'value'  => 'Controller:action'
                     ],
+                    [
+                        'name'   => 'methods',
+                        'value'  => ['GET', 'POST']
+                    ],
+                    [
+                        'name'   => 'rules',
+                        'value'  => ['first-token' => '[a-z]+', 'second-token' => '\/[^\/]+']
+                    ],
+                    [
+                        'name'   => 'route',
+                        'value'  => '/^\/source\/route\/{first-token}\/{second-token}$/'
+                    ],
+                    [
+                        'name'   => 'sourceRoute',
+                        'value'  => '/source/route/{first-token}/{second-token}'
+                    ],
+                    [
+                        'name'   => 'arguments',
+                        'value'  => ['first-argument' => '1', 'second-argument' => '2']
+                    ],
+                    [
+                        'name'   => 'defaults',
+                        'value'  => ['first-token' => 'default', 'second-token' => '/wild/card']
+                    ],
+                    [
+                        'name'   => 'extras',
+                        'value'  => ['first-extra', 'second-extra']
+                    ],
+                    [
+                        'name'   => 'tokens',
+                        'value'  => []
+                    ]
                 ]
             ]
         ];
