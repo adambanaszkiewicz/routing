@@ -14,9 +14,14 @@ class RouteCreator
         $this->collection = $collection;
     }
 
-    public function decorate($path)
+    public function decorate($path, $arguments)
     {
-        return $path;
+        if($arguments !== [])
+            $query = http_build_query($arguments);
+        else
+            $query = '';
+
+        return $path.($query ? '?'.$query : '');
     }
 
     public function create($name, array $arguments = [])
@@ -29,6 +34,8 @@ class RouteCreator
         {
             throw $e;
         }
+
+        $arguments = array_merge($route->getDefaults(), $arguments);
 
         if($route->getTokens() === [])
         {
@@ -53,11 +60,13 @@ class RouteCreator
                         throw new InvalidArgumentException("Required parameter '{$token['name']}' for route '{$name}' has wrong type.");
                     }
 
+                    unset($arguments[$token['name']]);
+
                     $source = str_replace($token['placeholder'], $argument, $source);
                 }
             }
         }
 
-        return $this->decorate($source);
+        return $this->decorate($source, $arguments);
     }
 }
