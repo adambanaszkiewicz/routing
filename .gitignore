@@ -1,0 +1,8 @@
+*.priv
+*.lnk
+Thumbs.db
+ehthumbs.db
+error_log
+Desktop.ini
+vendors
+composer.lock
