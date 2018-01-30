@@ -4,11 +4,10 @@
     "keywords": ["routing", "route", "php"],
     "license": "MIT",
     "require": {
-        "php": "~5.5 || ^7.0"
+        "php": "~5.5 || ~7.0"
     },
     "require-dev": {
-        "symfony/routing": "3.0.*",
-        "phpunit/phpunit": "5.7.*"
+        "symfony/routing": "3.0.*"
     },
     "autoload": {
         "psr-4": {
