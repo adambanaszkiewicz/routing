@@ -11,7 +11,19 @@ class RouteCreator
 
     public function __construct(RouteCollection $collection)
     {
+        $this->setCollection($collection);
+    }
+
+    public function setCollection(RouteCollection $collection)
+    {
         $this->collection = $collection;
+
+        return $this;
+    }
+
+    public function getCollection()
+    {
+        return $this->collection;
     }
 
     public function decorate($path, $arguments)
